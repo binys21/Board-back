@@ -5,6 +5,7 @@ import board.service.BoardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -22,6 +23,17 @@ public class BoardController {
         mv.addObject("list",list);
 
         return mv;
+    }
+    //글쓰기 요청 처리 메서드
+    @GetMapping("/board/openBoardWrite.do")
+    public String openBoardWrite() throws Exception {
+        return "/board/boardWrite";
+    }
+    //글 저장 요청 처리하는 메서드
+    @PostMapping("/board/insertBoard.do")
+    public String insertBoard(BoardDto boardDto) throws Exception {
+        boardService.insertBoard(boardDto);
+        return "redirect:/board/openBoardList.do";
     }
 
 }
