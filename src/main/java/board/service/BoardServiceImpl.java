@@ -21,4 +21,8 @@ public class BoardServiceImpl implements BoardService {
         boardDto.setCreatedId("Lee"); //사용자 id로 변경하기
         boardMapper.insertBoard(boardDto);
     }
+    @Override
+    public BoardDto selectBoardDetail(int boardIdx){
+        return boardMapper.selectBoardDetail(boardIdx);
+    }
 }

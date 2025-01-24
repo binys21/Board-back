@@ -4,8 +4,10 @@ import board.dto.BoardDto;
 import board.service.BoardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -34,6 +36,14 @@ public class BoardController {
     public String insertBoard(BoardDto boardDto) throws Exception {
         boardService.insertBoard(boardDto);
         return "redirect:/board/openBoardList.do";
+    }
+    @GetMapping("/board/openBoardDetail.do")
+    public ModelAndView openBoardDetail(@RequestParam("boardIdx") int boardIdx) throws Exception {
+        BoardDto boardDto =boardService.selectBoardDetail(boardIdx);
+
+        ModelAndView mv =new ModelAndView("/board/boardDetail");
+        mv.addObject("board",boardDto);
+        return mv;
     }
 
 }

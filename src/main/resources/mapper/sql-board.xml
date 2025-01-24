@@ -7,8 +7,19 @@
         where deleted_yn = 'N'
         order by board_idx desc
     </select>
+
     <insert id="insertBoard" parameterType="board.dto.BoardDto">
         insert into t_board(title,contents,created_dt,created_id)
         values (#{title},#{contents},now(),#{createdId})
     </insert>
+
+    <select id="selectBoardDetail" parameterType="int" resultType="board.dto.BoardDto">
+        select board_idx, title, hit_cnt, date_format(created_dt, '%Y.%m.%d %H:%i:%s') as created_dt,
+               contents, created_id
+        from t_board
+        where deleted_yn = 'N' and board_idx = #{boardIdx}
+    </select>
+
+
+
 </mapper>
