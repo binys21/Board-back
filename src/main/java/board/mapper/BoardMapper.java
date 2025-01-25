@@ -15,4 +15,5 @@ public interface BoardMapper {
     void updateBoard(BoardDto boardDto);
     void deleteBoard(BoardDto boardDto);
     void insertBoardFileList(List<BoardFileDto> fileInfoLIst);
+    List<BoardFileDto> selectBoardFileList(int boardIdx);
 }
