@@ -20,6 +20,12 @@
         where deleted_yn = 'N' and board_idx = #{boardIdx}
     </select>
 
+    <update id="updateHitCnt" parameterType="int">
+        update t_board
+        set hit_cnt=hit_cnt+1
+        where board_idx=#{boardIdx}
+    </update>
+
 
 
 </mapper>

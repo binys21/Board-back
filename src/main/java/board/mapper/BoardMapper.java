@@ -10,4 +10,5 @@ public interface BoardMapper {
     List<BoardDto> selectBoardList();
     void insertBoard(BoardDto boardDto);
     BoardDto selectBoardDetail(int boardIdx);
+    void updateHitCnt(int boardIdx);
 }
