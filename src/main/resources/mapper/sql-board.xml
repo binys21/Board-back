@@ -8,7 +8,8 @@
         order by board_idx desc
     </select>
 
-    <insert id="insertBoard" parameterType="board.dto.BoardDto">
+    <insert id="insertBoard" parameterType="board.dto.BoardDto"
+            useGeneratedKeys="true" keyProperty="boardIdx">
         insert into t_board(title,contents,created_dt,created_id)
         values (#{title},#{contents},now(),#{createdId})
     </insert>

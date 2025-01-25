@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -33,8 +34,8 @@ public class BoardController {
     }
     //글 저장 요청 처리하는 메서드
     @PostMapping("/board/insertBoard.do")
-    public String insertBoard(BoardDto boardDto) throws Exception {
-        boardService.insertBoard(boardDto);
+    public String insertBoard(BoardDto boardDto, MultipartHttpServletRequest request) throws Exception {
+        boardService.insertBoard(boardDto,request);
         return "redirect:/board/openBoardList.do";
     }
     @GetMapping("/board/openBoardDetail.do")

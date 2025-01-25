@@ -1,6 +1,7 @@
 package board.mapper;
 
 import board.dto.BoardDto;
+import board.dto.BoardFileDto;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -13,4 +14,5 @@ public interface BoardMapper {
     void updateHitCnt(int boardIdx);
     void updateBoard(BoardDto boardDto);
     void deleteBoard(BoardDto boardDto);
+    void insertBoardFileList(List<BoardFileDto> fileInfoLIst);
 }
