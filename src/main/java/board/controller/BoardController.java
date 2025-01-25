@@ -1,16 +1,23 @@
 package board.controller;
 
 import board.dto.BoardDto;
+import board.dto.BoardFileDto;
 import board.service.BoardService;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.net.URLEncoder;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 @Controller
@@ -59,6 +66,31 @@ public class BoardController {
     public String deleteBoard(@RequestParam("boardIdx") int boardIdx) throws Exception {
         boardService.deleteBoard(boardIdx);
         return "redirect:/board/openBoardList.do";
+    }
+
+    //파일 다운로드 요청 처리 메서드
+    @GetMapping("/board/downloadBoardFile.do")
+    public void downloadBoardFile(@RequestParam("idx") int idx, @RequestParam("boardIdx")int boardIdx,
+                                  HttpServletResponse response) throws Exception {
+        //idx와 boardIdx가 일치하는 파일 조회
+        BoardFileDto boardFileDto = boardService.selectBoardFileInfo(idx,boardIdx);
+        if(ObjectUtils.isEmpty(boardFileDto)){
+            return;
+        }
+        //원본 파일 저장 위치에서 파일을 읽어서 호출한 곳으로 전달
+        Path path = Paths.get(boardFileDto.getStoredFilePath());
+        byte[] file = Files.readAllBytes(path);
+
+        response.setContentType("application/octet-stream");
+        response.setContentLength(file.length);
+        response.setHeader("Content-Disposition",
+                "attachment; fileName=\"" + URLEncoder.encode(boardFileDto.getOriginalFileName(), "UTF-8") + "\";");
+        response.setHeader("Content-Transfer-Encoding", "binary");
+
+        response.getOutputStream().write(file);
+        response.getOutputStream().flush();
+        response.getOutputStream().close();
+
     }
 
 }

@@ -68,5 +68,9 @@ public class BoardServiceImpl implements BoardService {
         boardDto.setUpdatorId("go");
         boardMapper.deleteBoard(boardDto);
     }
+    @Override
+    public BoardFileDto selectBoardFileInfo(int idx, int boardIdx){
+        return boardMapper.selectBoardFileInfo(idx,boardIdx);
+    }
 
 }

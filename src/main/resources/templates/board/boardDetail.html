@@ -41,7 +41,10 @@
   </form>
   <!-- 첨부파일 목록 -->
   <div class="file_list">
-    <a th:each="file : ${board.fileInfoList}" th:text="|${file.originalFileName} (${file.fileSize}kb)|"></a>
+    <a th:each="file : ${board.fileInfoList}"
+       th:text="|${file.originalFileName} (${file.fileSize}kb)|"
+       th:href="@{/board/downloadBoardFile.do(idx=${file.idx},
+       boardIdx=${file.boardIdx})}"></a>
   </div>
 
   <input type="button" id="list" class="btn" value="목록으로" />

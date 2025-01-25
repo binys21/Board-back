@@ -48,4 +48,10 @@
         from t_file
         where board_idx = #{boardIdx} and deleted_yn = 'N'
     </select>
+    <select id="selectBoardFileInfo" parameterType="map" resultType="board.dto.BoardFileDto">
+        select original_file_name, stored_file_path, file_size
+        from t_file
+        where idx = #{idx} and board_idx = #{boardIdx} and deleted_yn = 'N'
+    </select>
+
 </mapper>
