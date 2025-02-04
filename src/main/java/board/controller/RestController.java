@@ -42,9 +42,13 @@ public class RestController {
     @PostMapping("/board/write")
     // public String insertBoard(BoardDto boardDto, MultipartHttpServletRequest request) throws Exception {
     public String insertBoard(BoardInsertRequest boardInsertRequest, MultipartHttpServletRequest request) throws Exception {
+        /*
         BoardDto boardDto = new BoardDto();
         boardDto.setTitle(boardInsertRequest.getTitle());
         boardDto.setContents(boardInsertRequest.getContents());
+        */
+        BoardDto boardDto = new ModelMapper().map(boardInsertRequest, BoardDto.class);
+
 
         boardService.insertBoard(boardDto, request);
         return "redirect:/board";

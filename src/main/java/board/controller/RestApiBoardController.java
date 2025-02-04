@@ -44,13 +44,18 @@ public class RestApiBoardController {
 
         List<BoardListResponse> results = new ArrayList<>();
         for (BoardDto dto : boardList) {
+            /*
             BoardListResponse res = new BoardListResponse();
             res.setBoardIdx(dto.getBoardIdx());
             res.setTitle(dto.getTitle());
             res.setHitCnt(dto.getHitCnt());
             res.setCreatedDt(dto.getCreatedDt());
             results.add(res);
+            */
+
         }
+        boardList.forEach(dto -> results.add(new ModelMapper().map(dto, BoardListResponse.class)));
+
         return results;
     }
 
