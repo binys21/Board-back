@@ -17,7 +17,7 @@ import java.util.List;
 public class BoardEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    private int boardIdx;
 
     @Column(nullable = false)
     private String title;
