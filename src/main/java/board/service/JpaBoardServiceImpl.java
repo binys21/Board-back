@@ -42,7 +42,9 @@ public class JpaBoardServiceImpl implements JpaBoardService {
 
     @Override
     public void insertBoard(BoardEntity boardEntity, MultipartHttpServletRequest request) throws Exception {
-        boardEntity.setCreatedId("admin");
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        boardEntity.setCreatedId(username);
+
         List<BoardFileEntity> list = fileUtils.parseFileInfo2(boardEntity.getBoardIdx(), request);
         if (!CollectionUtils.isEmpty(list)) {
             boardEntity.setFileInfoList(list);
