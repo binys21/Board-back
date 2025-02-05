@@ -13,7 +13,7 @@ public class SecurityConfiguration {
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         http.authorizeHttpRequests(auth-> auth
-                .requestMatchers("/", "/login", "/home").permitAll()
+                .requestMatchers("/", "/login", "/home", "/join", "/joinProc").permitAll()
                 .requestMatchers("/board/**", "/api/**").hasAnyRole("ADMIN", "USER")
                 .anyRequest().authenticated()
         );
@@ -26,4 +26,9 @@ public class SecurityConfiguration {
 
     return http.build();
      }
+    @Bean
+    BCryptPasswordEncoder bCryptPasswordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
 }
