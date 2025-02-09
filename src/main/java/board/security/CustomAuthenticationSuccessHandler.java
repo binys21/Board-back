@@ -12,7 +12,10 @@ import board.repository.UserRepository;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.security.Keys;
 
+import javax.crypto.SecretKey;
 import java.io.IOException;
 import java.util.Date;
 
@@ -37,15 +40,20 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
         Date now =new Date();
         Long expirationTime=Long.parseLong(env.getProperty("token.expiration-time"));
 
+        //서명에 사용할 키를 생성
+        String secret=env.getProperty("token.secret");
+        SecretKey hmacKey = Keys.hmacShaKeyFor(secret.getBytes());
+
         //JWT 토큰 생성
         String jwtToken = Jwts.builder()
                         .claim("name",userEntity.getName())
-                .claim("email",userEntity.getEmail())
+                        .claim("email",userEntity.getEmail())
                         .subject(userEntity.getUsername())
-                                .id(String.valueOf(userEntity.getSeq()))
-                                        .issuedAt(now)
-                                                .expiration(new Date(now.getTIme()+expirationTime))
-                                                        .compact();
+                        .id(String.valueOf(userEntity.getSeq()))
+                        .issuedAt(now)
+                        .expiration(new Date(now.getTime()+expirationTime))
+                        .signWith(hmacKey,Jwts.SIG.HS256)
+                        .compact();
         log.debug(jwtToken);
 
 
