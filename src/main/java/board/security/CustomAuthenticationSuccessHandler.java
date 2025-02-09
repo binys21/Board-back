@@ -1,4 +1,5 @@
 package board.security;
+import board.common.JwtUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -26,7 +27,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
     private UserRepository userRepository;
 
     @Autowired
-    private Environment env;
+    private JwtUtils jwtUtils;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
@@ -34,29 +35,9 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         UserEntity userEntity = userRepository.findByUsername(userDetails.getUsername());
 
-        //request.getSession().setAttribute("user", userEntity);
+        String jwtToken = jwtUtils.generateToken(userEntity);
 
-        //토큰 발행시간 & 만료시간
-        Date now =new Date();
-        Long expirationTime=Long.parseLong(env.getProperty("token.expiration-time"));
-
-        //서명에 사용할 키를 생성
-        String secret=env.getProperty("token.secret");
-        SecretKey hmacKey = Keys.hmacShaKeyFor(secret.getBytes());
-
-        //JWT 토큰 생성
-        String jwtToken = Jwts.builder()
-                        .claim("name",userEntity.getName())
-                        .claim("email",userEntity.getEmail())
-                        .subject(userEntity.getUsername())
-                        .id(String.valueOf(userEntity.getSeq()))
-                        .issuedAt(now)
-                        .expiration(new Date(now.getTime()+expirationTime))
-                        .signWith(hmacKey,Jwts.SIG.HS256)
-                        .compact();
-        log.debug(jwtToken);
-
-
+        response.setHeader("token",jwtToken);
 
         response.sendRedirect("/");
     }
