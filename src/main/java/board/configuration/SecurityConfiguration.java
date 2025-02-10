@@ -27,6 +27,9 @@ public class SecurityConfiguration {
     private CustomAuthenticationSuccessHandler successHandler;
     @Autowired
     private JwtRequestFilter jwtRequestFilter;
+    @Autowired
+    private CustomUserDetailsService userDetailsService;
+
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
@@ -60,10 +63,7 @@ public class SecurityConfiguration {
         AuthenticationManagerBuilder authManagerBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
         authManagerBuilder
                 .userDetailsService(userDetailsService)
-                .passwordEncoder(bCryptPasswordEncoder());
+                .passwordEncoder(bCryptPasswordEncoder()); //패스워드 암호화
         return authManagerBuilder.build();
     }
-
-
-
 }
