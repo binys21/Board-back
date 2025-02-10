@@ -77,7 +77,7 @@ public class JwtRequestFilter {
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request)throws ServletException{
-        String[] excludePath = { "/login", "/loginProc", "/join", "/joinProc" };
+        String[] excludePath = { "/loginProc", "/joinProc" };
 
         String uri=request.getRequestURI();
         return Arrays.stream(excludePath).anyMatch(uri::startsWith);
